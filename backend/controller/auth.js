@@ -1,11 +1,14 @@
-import bcrypt from "bcryptjs";
+const bcrypt = require("bcryptjs");
 
-import prisma from "../config/prisma.js";
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
+
 
 
 // SIGNUP
 
-export const signup = async (req, res) => {
+exports.signup = async (req, res) => {
 
   try {
 
@@ -27,7 +30,7 @@ export const signup = async (req, res) => {
 
       return res.status(400).json({
 
-        message: "User already exists"
+        message: "Email already exists"
 
       });
 
@@ -68,11 +71,14 @@ export const signup = async (req, res) => {
 
     });
 
+
   } catch (error) {
+
+    console.log(error);
 
     res.status(500).json({
 
-      message: error.message
+      message: "Server error"
 
     });
 
@@ -81,9 +87,11 @@ export const signup = async (req, res) => {
 };
 
 
+
+
 // LOGIN
 
-export const login = async (req, res) => {
+exports.login = async (req, res) => {
 
   try {
 
@@ -101,9 +109,11 @@ export const login = async (req, res) => {
     });
 
 
+    // USER NOT FOUND
+
     if (!user) {
 
-      return res.status(400).json({
+      return res.status(404).json({
 
         message: "User not found"
 
@@ -114,12 +124,7 @@ export const login = async (req, res) => {
 
     // CHECK PASSWORD
 
-    const isMatch = await bcrypt.compare(
-
-      password,
-      user.password
-
-    );
+    const isMatch = await bcrypt.compare(password, user.password);
 
 
     if (!isMatch) {
@@ -147,11 +152,14 @@ export const login = async (req, res) => {
 
     });
 
+
   } catch (error) {
+
+    console.log(error);
 
     res.status(500).json({
 
-      message: error.message
+      message: "Server error"
 
     });
 
