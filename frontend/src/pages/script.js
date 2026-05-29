@@ -1,4 +1,57 @@
 // ===============================
+// USER AUTH SYSTEM
+// ===============================
+
+const currentUser = JSON.parse(localStorage.getItem("user"));
+
+const loginLink = document.querySelector(".login-link");
+
+const signupLink = document.querySelector(".signup-link");
+
+const userInfo = document.querySelector(".user-info");
+
+const username = document.querySelector(".username");
+
+const logoutBtn = document.querySelector(".logout-btn");
+
+
+if (currentUser) {
+
+  if (loginLink) {
+    loginLink.style.display = "none";
+  }
+
+  if (signupLink) {
+    signupLink.style.display = "none";
+  }
+
+  if (userInfo) {
+    userInfo.style.display = "flex";
+  }
+
+  if (username) {
+    username.innerText = `Hi, ${currentUser.name}`;
+  }
+
+}
+
+
+if (logoutBtn) {
+
+  logoutBtn.addEventListener("click", () => {
+
+    localStorage.removeItem("user");
+
+    alert("Logged Out");
+
+    window.location.reload();
+
+  });
+
+}
+
+
+// ===============================
 // DARK MODE
 // ===============================
 
@@ -24,35 +77,43 @@ if (toggle) {
 
 }
 
+
 // ===============================
 // SIDEBAR MENU
 // ===============================
 
 const menuBtn = document.getElementById("menuBtn");
+
 const sideMenu = document.getElementById("sideMenu");
+
 const overlay = document.getElementById("menuOverlay");
+
 
 if (menuBtn) {
 
   menuBtn.onclick = () => {
 
     sideMenu.classList.toggle("open");
+
     overlay.classList.toggle("active");
 
   };
 
 }
 
+
 if (overlay) {
 
   overlay.onclick = () => {
 
     sideMenu.classList.remove("open");
+
     overlay.classList.remove("active");
 
   };
 
 }
+
 
 // ===============================
 // FILTER SERVICES
@@ -81,6 +142,7 @@ function filterServices(category) {
 
 }
 
+
 // ===============================
 // SHOW ALL SERVICES
 // ===============================
@@ -90,6 +152,7 @@ function showAll() {
   filterServices("all");
 
 }
+
 
 // ===============================
 // OPEN BOOKING PAGE
@@ -102,6 +165,7 @@ function openBooking(service) {
   window.location = "booking.html";
 
 }
+
 
 // ===============================
 // LOAD SERVICE NAME
@@ -121,6 +185,7 @@ if (window.location.pathname.includes("booking.html")) {
 
 }
 
+
 // ===============================
 // CONFIRM BOOKING
 // ===============================
@@ -130,6 +195,7 @@ function confirmBooking() {
   alert("Booking Confirmed ✅");
 
 }
+
 
 // ===============================
 // SEARCH SERVICES
@@ -162,21 +228,36 @@ function searchService() {
 
 }
 
+
 // ===============================
 // LOGIN MODAL
 // ===============================
 
 function openLogin() {
 
-  document.getElementById("loginModal").style.display = "flex";
+  const modal = document.getElementById("loginModal");
+
+  if (modal) {
+
+    modal.style.display = "flex";
+
+  }
 
 }
+
 
 function closeLogin() {
 
-  document.getElementById("loginModal").style.display = "none";
+  const modal = document.getElementById("loginModal");
+
+  if (modal) {
+
+    modal.style.display = "none";
+
+  }
 
 }
+
 
 // ===============================
 // CLOSE MODAL ON OUTSIDE CLICK
@@ -193,100 +274,3 @@ window.onclick = function (event) {
   }
 
 };
-
-// ===============================
-// LOGIN API
-// ===============================
-
-const loginForm = document.getElementById("loginForm");
-
-if (loginForm) {
-
-  loginForm.addEventListener("submit", async (e) => {
-
-    e.preventDefault();
-
-    const email = document.getElementById("email").value;
-
-    const password = document.getElementById("password").value;
-
-    try {
-
-      const response = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            email,
-            password,
-          }),
-
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-
-        alert("Login Successful ✅");
-
-        localStorage.setItem("token", data.token);
-
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data.user)
-        );
-
-        window.location.reload();
-
-      } else {
-
-        alert(data.message);
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Server Error");
-
-    }
-
-  });
-
-}
-
-// ===============================
-// LOGOUT
-// ===============================
-
-function logout() {
-
-  localStorage.removeItem("token");
-
-  localStorage.removeItem("user");
-
-  alert("Logged Out");
-
-  window.location.reload();
-
-}
-
-// ===============================
-// CHECK LOGIN STATUS
-// ===============================
-
-const user = localStorage.getItem("user");
-
-if (user) {
-
-  console.log("User Logged In");
-
-}

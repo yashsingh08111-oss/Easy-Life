@@ -12,7 +12,7 @@ loginForm.addEventListener("submit", async (e) => {
 
     const response = await fetch(
 
-      "https://wildlife-anatomy-served-sciences.trycloudflare.com",
+      "http://localhost:5000/api/auth/login",
 
       {
 
@@ -34,6 +34,11 @@ loginForm.addEventListener("submit", async (e) => {
     const data = await response.json();
 
     alert(data.message);
+
+
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+window.location.href = "index.html";
 
     console.log(data);
 
