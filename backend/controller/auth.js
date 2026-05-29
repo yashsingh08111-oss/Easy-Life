@@ -1,6 +1,6 @@
-const bcrypt = require("bcryptjs");
+import bcrypt from "bcryptjs";
 
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 
 // SIGNUP
 
-exports.signup = async (req, res) => {
+export const signup = async (req, res) => {
 
   try {
 
@@ -91,7 +91,7 @@ exports.signup = async (req, res) => {
 
 // LOGIN
 
-exports.login = async (req, res) => {
+export const login = async (req, res) => {
 
   try {
 
